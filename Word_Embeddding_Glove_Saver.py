@@ -4,7 +4,7 @@ import pickle, json
 import os, time
 import re
 
-class EmbeddingSaver():
+class EmbeddingAdapter():
 	'''
 	Uses the twitter glove embedding available at https://nlp.stanford.edu/projects/glove/
 	can convert them into:
@@ -15,7 +15,7 @@ class EmbeddingSaver():
 	vocab_size=int(1.2e6)
 	embedding_dim=0
 	def __init__(self, user_config_filename='config.json'):
-		'''Set the path that has the glove folder'''
+		'''Set the path that has the glove folder and will have the exported folders'''
 		try:
 			json_config_file = open(user_config_filename)
 		except FileNotFoundError:
@@ -132,7 +132,7 @@ class EmbeddingSaver():
 		print('Done')
 		return True
 def main():
-	es = EmbeddingSaver()
-	es.run()
+	ea = EmbeddingAdapter()
+	ea.run()
 
 if __name__ == "__main__": main()
