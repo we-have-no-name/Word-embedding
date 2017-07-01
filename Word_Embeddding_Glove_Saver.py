@@ -8,7 +8,7 @@ class EmbeddingAdapter():
 	'''
 	Uses the twitter glove embedding available at https://nlp.stanford.edu/projects/glove/
 	can convert them into:
-		a dictionary that maps a word to its vector's id in an array
+		a dictionary that maps a word to its vector's index in an embedding array
 		a numpy array for the words' embeddings
 		a TensorFlow variable file for the embeddings
 	'''
@@ -25,9 +25,9 @@ class EmbeddingAdapter():
 		self.data_path = user_config.get('data_path', os.getcwd())
 		
 	def set_config_file(self, user_config_filename):
-		'''Set a user config file with the path that has the glove folder:\n'''
+		'''Set a user config file with the path that has the glove folder'''
 		user_config = {}
-		user_config['data_path'] = input("Enter the path to the folder that has the glove folder")
+		user_config['data_path'] = input("Enter the path to the folder that has the glove folder:\n")
 
 		json_config_file = open(user_config_filename, 'w+')
 		json.dump(user_config, json_config_file)
@@ -56,7 +56,7 @@ class EmbeddingAdapter():
 		return True
 
 	def save_embedding_dict(self, embedding_dim=200, save_vocab=False):
-		'''Save the dictionary that maps words to their ids in the embedding numpy array'''
+		'''Save the dictionary that maps words to their indices in the embedding numpy array'''
 		if embedding_dim!=self.embedding_dim: self.read_embedding(embedding_dim)
 		self.embedding_folder = os.path.join(self.data_path, "d" + str(embedding_dim) +"_word_embedding")
 		if not os.path.exists(self.embedding_folder): os.makedirs(self.embedding_folder)
@@ -78,7 +78,7 @@ class EmbeddingAdapter():
 		
 	def save_embedding_np(self, embedding_dim=200):
 		'''Save the embedding to pickle files'''
-		# save the dictionary that maps words to their ids in the np_embedding array
+		# save the dictionary that maps words to their indices in the np_embedding array
 		self.save_embedding_dict(embedding_dim)
 		
 		# save the embedding numpy array
@@ -90,7 +90,7 @@ class EmbeddingAdapter():
 	def save_embedding_tf(self, embedding_dim=200, save_dict=True):
 		'''Save the embedding as a TensorFlow session variable'''
 		if embedding_dim!=self.embedding_dim: self.read_embedding(embedding_dim)
-		# save the dictionary that maps words to their ids in the np_embedding array
+		# save the dictionary that maps words to their indices in the np_embedding array
 		if save_dict: self.save_embedding_dict(embedding_dim)
 		
 		# create the graph and store the embedding numpy array in the *embedding* session variable
@@ -115,7 +115,7 @@ class EmbeddingAdapter():
 		ve=False
 		try:
 			if embedding_dim is None:
-				embedding_dim = input("Choose an embedding dimensionality (25, 50, 100, 200, all): ")
+				embedding_dim = input("Choose an embedding dimensionality (25, 50, 100, 200, all) [200]: ")
 				if embedding_dim != 'all': embedding_dim = int(embedding_dim)
 		except ValueError:
 			ve = True
